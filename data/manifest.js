@@ -1,0 +1,1 @@
+window.LAKERS_MANIFEST = ["2026-07-19"];

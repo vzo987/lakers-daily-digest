@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lakers Daily Digest</title>
+<style>
+  :root {
+    --purple: #552583;
+    --purple-dark: #3b1a5c;
+    --gold: #FDB927;
+    --bg: #f6f4fa;
+    --card: #ffffff;
+    --text: #1d1d2b;
+    --muted: #6b6880;
+    --zh-bg: #fdf6e3;
+    --zh-border: #FDB927;
+    --grammar-bg: #f0ebf8;
+    --grammar-border: #552583;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Georgia, "Times New Roman", "Microsoft JhengHei", "PingFang TC", serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  header {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: #fff;
+    padding: 28px 20px 22px;
+    border-bottom: 4px solid var(--gold);
+  }
+  .header-inner { max-width: 860px; margin: 0 auto; }
+  .brand {
+    font-size: 30px; font-weight: bold; letter-spacing: 0.5px;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  }
+  .brand .gold { color: var(--gold); }
+  .headline { margin-top: 10px; font-size: 17px; font-style: italic; opacity: 0.95; }
+  .headline-zh { margin-top: 2px; font-size: 14px; opacity: 0.8; display: none; }
+  body.zh-mode .headline-zh { display: block; }
+
+  .toolbar {
+    max-width: 860px; margin: 0 auto; padding: 14px 20px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+  }
+  .toolbar label { font-size: 14px; color: var(--muted); }
+  select {
+    padding: 6px 10px; font-size: 14px; border: 1px solid #cfc8de;
+    border-radius: 8px; background: #fff; color: var(--text);
+  }
+  .toggle-btn {
+    margin-left: auto;
+    padding: 8px 18px; font-size: 14px; font-weight: 600;
+    border: 2px solid var(--purple); border-radius: 999px;
+    background: #fff; color: var(--purple); cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+  }
+  .toggle-btn:hover { background: #efe9f7; }
+  body.zh-mode .toggle-btn { background: var(--purple); color: var(--gold); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 6px 20px 60px; }
+  .article {
+    background: var(--card); border-radius: 14px; padding: 26px 28px;
+    margin-bottom: 26px; box-shadow: 0 2px 10px rgba(60, 30, 100, 0.08);
+    border-left: 5px solid var(--gold);
+  }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    background: var(--purple); color: var(--gold);
+    padding: 3px 10px; border-radius: 999px; margin-bottom: 10px;
+    font-family: "Segoe UI", sans-serif;
+  }
+  h2 { font-size: 22px; line-height: 1.35; color: var(--purple-dark); }
+  .title-zh { display: none; font-size: 15px; color: var(--muted); margin-top: 3px;
+    font-family: "Microsoft JhengHei", "PingFang TC", sans-serif; }
+  body.zh-mode .title-zh { display: block; }
+  .sources { margin: 10px 0 4px; font-size: 12.5px; color: var(--muted);
+    font-family: "Segoe UI", sans-serif; }
+  .sources a { color: var(--purple); text-decoration: none; border-bottom: 1px dotted var(--purple); margin-right: 10px; }
+  .sources a:hover { color: var(--gold); border-color: var(--gold); }
+
+  .para { margin-top: 18px; }
+  .para .en { font-size: 16.5px; }
+  .zh-block, .study-block { display: none; }
+  body.zh-mode .zh-block, body.zh-mode .study-block { display: block; }
+  .zh-block {
+    margin-top: 10px; padding: 12px 16px; font-size: 14.5px;
+    background: var(--zh-bg); border-left: 4px solid var(--zh-border);
+    border-radius: 0 8px 8px 0;
+    font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+  }
+  .study-block {
+    margin-top: 8px; padding: 12px 16px;
+    background: var(--grammar-bg); border-left: 4px solid var(--grammar-border);
+    border-radius: 0 8px 8px 0; font-size: 13.5px;
+    font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+  }
+  .study-block h4 {
+    font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--purple); margin-bottom: 6px;
+  }
+  .vocab-item { margin-bottom: 4px; }
+  .vocab-item .term { font-weight: 700; color: var(--purple-dark); font-family: Georgia, serif; }
+  .vocab-item .pos { color: var(--muted); font-style: italic; margin: 0 4px; }
+  .vocab-item .note { color: var(--muted); }
+  .grammar-item { margin-bottom: 8px; }
+  .grammar-item .sent {
+    font-family: Georgia, serif; font-style: italic;
+    color: var(--purple-dark); display: block; margin-bottom: 2px;
+  }
+  footer { text-align: center; padding: 20px; font-size: 12px; color: var(--muted);
+    font-family: "Segoe UI", sans-serif; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">LAKERS <span class="gold">DAILY DIGEST</span></div>
+    <div class="headline" id="headline"></div>
+    <div class="headline-zh" id="headline-zh"></div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <label for="date-select">Issue 日期：</label>
+  <select id="date-select"></select>
+  <button class="toggle-btn" id="toggle-zh">中文翻譯＋文法解析：關</button>
+</div>
+
+<main id="content"><div class="empty">Loading…</div></main>
+<footer>Generated daily by Claude · English digest with sources · 中文模式提供翻譯與文法解析</footer>
+
+<script src="data/manifest.js"></script>
+<script>
+(function () {
+  var manifest = window.LAKERS_MANIFEST || [];
+  var select = document.getElementById("date-select");
+  var content = document.getElementById("content");
+  var toggleBtn = document.getElementById("toggle-zh");
+
+  // 中文模式切換（記住上次選擇）
+  function setZhMode(on) {
+    document.body.classList.toggle("zh-mode", on);
+    toggleBtn.textContent = "中文翻譯＋文法解析：" + (on ? "開" : "關");
+    try { localStorage.setItem("lakers-zh-mode", on ? "1" : "0"); } catch (e) {}
+  }
+  toggleBtn.addEventListener("click", function () {
+    setZhMode(!document.body.classList.contains("zh-mode"));
+  });
+  try { setZhMode(localStorage.getItem("lakers-zh-mode") === "1"); } catch (e) {}
+
+  manifest.forEach(function (d) {
+    var opt = document.createElement("option");
+    opt.value = d; opt.textContent = d;
+    select.appendChild(opt);
+  });
+  select.addEventListener("change", function () { loadIssue(select.value); });
+
+  function loadIssue(date) {
+    if (window.LAKERS_NEWS && window.LAKERS_NEWS[date]) { render(window.LAKERS_NEWS[date]); return; }
+    var s = document.createElement("script");
+    s.src = "data/" + date + ".js";
+    s.onload = function () {
+      if (window.LAKERS_NEWS && window.LAKERS_NEWS[date]) render(window.LAKERS_NEWS[date]);
+      else content.innerHTML = '<div class="empty">No data for ' + date + "</div>";
+    };
+    s.onerror = function () { content.innerHTML = '<div class="empty">Failed to load ' + date + "</div>"; };
+    document.body.appendChild(s);
+  }
+
+  function esc(t) {
+    var d = document.createElement("div"); d.textContent = t == null ? "" : t; return d.innerHTML;
+  }
+
+  function render(issue) {
+    document.getElementById("headline").textContent = issue.headline || "";
+    document.getElementById("headline-zh").textContent = issue.headline_zh || "";
+    var html = "";
+    (issue.articles || []).forEach(function (a) {
+      html += '<article class="article">';
+      if (a.tag) html += '<span class="tag">' + esc(a.tag) + "</span>";
+      html += "<h2>" + esc(a.title) + "</h2>";
+      if (a.title_zh) html += '<div class="title-zh">' + esc(a.title_zh) + "</div>";
+      if (a.sources && a.sources.length) {
+        html += '<div class="sources">Sources: ';
+        a.sources.forEach(function (s) {
+          html += '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.name) + " ↗</a>";
+        });
+        html += "</div>";
+      }
+      (a.paragraphs || []).forEach(function (p) {
+        html += '<div class="para"><p class="en">' + esc(p.en) + "</p>";
+        if (p.zh) html += '<div class="zh-block">' + esc(p.zh) + "</div>";
+        var hasVocab = p.vocab && p.vocab.length, hasGrammar = p.grammar && p.grammar.length;
+        if (hasVocab || hasGrammar) {
+          html += '<div class="study-block">';
+          if (hasVocab) {
+            html += "<h4>單字片語 Vocabulary</h4>";
+            p.vocab.forEach(function (v) {
+              html += '<div class="vocab-item"><span class="term">' + esc(v.term) + "</span>" +
+                '<span class="pos">' + esc(v.pos) + "</span> " + esc(v.zh) +
+                (v.note ? ' <span class="note">— ' + esc(v.note) + "</span>" : "") + "</div>";
+            });
+          }
+          if (hasGrammar) {
+            html += '<h4 style="margin-top:8px">文法解析 Grammar</h4>';
+            p.grammar.forEach(function (g) {
+              html += '<div class="grammar-item"><span class="sent">“' + esc(g.sentence) + "”</span>" +
+                esc(g.analysis) + "</div>";
+            });
+          }
+          html += "</div>";
+        }
+        html += "</div>";
+      });
+      html += "</article>";
+    });
+    content.innerHTML = html || '<div class="empty">No articles.</div>';
+  }
+
+  if (manifest.length) loadIssue(manifest[0]);
+  else content.innerHTML = '<div class="empty">No issues yet — run the daily update.</div>';
+})();
+</script>
+</body>
+</html>

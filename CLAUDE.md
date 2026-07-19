@@ -33,6 +33,10 @@
 6. 產出 `data/YYYY-MM-DD.js`（格式見下方 schema），日期用當天日期。
 7. 在 `data/manifest.js` 的陣列**最前面**加入新日期。
 8. 不要修改 `index.html` 除非格式有變動。
+9. **發布到 GitHub Pages**：產完資料後執行
+   `git add -A && git commit -m "digest: YYYY-MM-DD" && git push`
+   （remote 已設定為 https://github.com/vzo987/lakers-daily-digest，
+   線上閱讀網址：https://vzo987.github.io/lakers-daily-digest/，push 後約 1 分鐘生效。）
 
 ## 資料檔 schema（data/YYYY-MM-DD.js）
 

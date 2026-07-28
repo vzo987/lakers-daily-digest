@@ -1,1 +1,1 @@
-window.LAKERS_MANIFEST = ["2026-07-19"];
+window.LAKERS_MANIFEST = ["2026-07-26", "2026-07-19"];

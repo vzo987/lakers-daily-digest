@@ -23,17 +23,22 @@
    - 改用 WebSearch 間接取得，例如：`Lakers fans react <話題>`、`r/lakers reaction <話題>`、
      `Silver Screen and Roll reacts survey`、HoopsHype 的 social media roundup 等轉述報導。
    - 內容整理球迷圈的主流意見、爭論點、有趣留言（可意譯），出處附轉述來源的連結。
-4. 挑選 4–6 則最重要的新聞（含上述 Fan Pulse），每則寫成一篇短文（2–3 段，每段 2–4 句）。
+4. **抓不到就跳過，不要卡住**：
+   - WebFetch 遇到 403／付費牆／重導向（Silver Screen and Roll、Deadline 等常見）就直接放棄那個連結，
+     **不要重試、不要換路徑硬抓、不要為此加新網域權限**。
+   - WebSearch 的摘要通常已足夠寫稿；連結照樣放進 `sources`（讀者點得開就好，我們抓不到不影響）。
+   - 寧可少一篇、少一個細節，也不要為了湊滿而拖長流程。**產得出來的就產，不必 100%。**
+5. 挑選 4–6 則最重要的新聞（含上述 Fan Pulse），每則寫成一篇短文（2–3 段，每段 2–4 句）。
    - **文章內文必須是你自己改寫的英文摘要**，不可整段抄襲原文。
    - 每篇附上出處連結（sources）。
-5. 為每一段寫：
+6. 為每一段寫：
    - `zh`：自然通順的繁體中文翻譯
    - `vocab`：2–4 個關鍵單字／片語（term、pos 詞性、zh 中譯、note 補充）
    - `grammar`：1–2 個文法解析點（sentence 摘錄原句、analysis 用繁體中文解釋句構）
-6. 產出 `data/YYYY-MM-DD.js`（格式見下方 schema），日期用當天日期。
-7. 在 `data/manifest.js` 的陣列**最前面**加入新日期。
-8. 不要修改 `index.html` 除非格式有變動。
-9. **發布到 GitHub Pages**：產完資料後執行
+7. 產出 `data/YYYY-MM-DD.js`（格式見下方 schema），日期用當天日期。
+8. 在 `data/manifest.js` 的陣列**最前面**加入新日期。
+9. 不要修改 `index.html` 除非格式有變動。
+10. **發布到 GitHub Pages**：產完資料後執行
    `git add -A && git commit -m "digest: YYYY-MM-DD" && git push`
    （remote 已設定為 https://github.com/vzo987/lakers-daily-digest，
    線上閱讀網址：https://vzo987.github.io/lakers-daily-digest/，push 後約 1 分鐘生效。）
@@ -80,3 +85,5 @@ window.LAKERS_MANIFEST = ["2026-07-19"]; // 新的日期加在最前面
 - 一律使用繁體中文（台灣用語）。
 - 資料檔用 script 標籤載入（不是 fetch），所以 `index.html` 直接雙擊開啟（file://）也能用。
 - 若當天沒有大新聞，寫論壇討論熱點或深度分析也可以，但至少要有 3 篇。
+- **指令不要串接**：node 驗證、`git add`、`git commit`、`git push` 各下一條。
+  串成 `node ...; if ($?) { git ... }` 這種複合指令會使既有的權限規則失效，反而跳出確認視窗。
